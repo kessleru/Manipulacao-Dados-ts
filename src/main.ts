@@ -34,11 +34,14 @@ function preencherEstatisticas(transacoes: Transacao[]): void {
 
   const totalElement = document.querySelector('#total') as HTMLSpanElement;
   if (!totalElement) return;
-
   totalElement.textContent = data.total.toLocaleString('pt-BR', {
     style: 'currency',
     currency: 'BRL',
   });
+
+  const diaElement = document.querySelector('#dia') as HTMLSpanElement;
+  if (!diaElement) return;
+  diaElement.textContent = data.melhorDia[0];
 }
 
 function preencherTabela(transacoes: Transacao[]): void {
