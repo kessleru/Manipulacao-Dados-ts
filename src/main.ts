@@ -1,4 +1,5 @@
 // import './style.css';
+import type { CountList } from './countBy';
 import Estatisticas from './Estastisticas';
 import fetchData from './fetchData';
 import normalizarTransacao from './normalizarTransacao';
@@ -16,20 +17,37 @@ async function handleData() {
   preencherEstatisticas(transacoes);
 }
 
+function preencherLista(lista: CountList, contaiderId: string): void {
+  const containerElement = document.getElementById(contaiderId);
+  if (!containerElement) return;
+
+  Object.keys(lista).forEach((key) => {
+    containerElement.innerHTML += `<p>${key}: ${lista[key]}</p>`;
+  });
+}
+
 function preencherEstatisticas(transacoes: Transacao[]): void {
   const data = new Estatisticas(transacoes);
-  const totalElement = document.querySelector('#total') as HTMLSpanElement;
 
+  preencherLista(data.pagamento, 'pagamento');
+  preencherLista(data.status, 'status');
+
+  const totalElement = document.querySelector('#total') as HTMLSpanElement;
   if (!totalElement) return;
 
-  totalElement.textContent = data.total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  totalElement.textContent = data.total.toLocaleString('pt-BR', {
+    style: 'currency',
+    currency: 'BRL',
+  });
 }
 
 function preencherTabela(transacoes: Transacao[]): void {
-  const tabela = document.querySelector('#transacoes tbody') as HTMLTableElement;
+  const tabela = document.querySelector(
+    '#transacoes tbody'
+  ) as HTMLTableElement;
 
-  if(!tabela) return;
-  
+  if (!tabela) return;
+
   transacoes.forEach((transacao) => {
     const tr = document.createElement('tr');
     tr.innerHTML = `
